@@ -1,9 +1,9 @@
 import React from "react";
-import "./styles.css";
+import "./loading.css";
 
 const LoadingPlaceholder = () => {
     return (
-        <div class="lds-ellipsis">
+        <div className="lds-ellipsis">
             <div/>
             <div/>
             <div/>

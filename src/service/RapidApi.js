@@ -1,106 +1,54 @@
-export async function createRapidApiSessionKey(day) {
-    //day = "2019-09-01",
-    const url = 'https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices/pricing/v1.0';
-    const data = {
-        // "inboundDate": "",
-        // "cabinClass": "",
-        // "children": "",
-        // "infants": "",
-        "country": "US",
-        "currency": "USD",
-        "locale": "en-US",
-        "originPlace": "SFO-sky",
-        "destinationPlace": "LHR-sky",
-        "outboundDate": day,
-        "adults": 1
-    };
+import {CONFIG, API_CREDENTIALS, POLL_SESSION_STATUS, PAGE_SIZE} from "../config/RapidApiConfig";
+import {format} from 'date-fns';
 
-    const payload = "country=US&currency=USD&locale=en-US&originPlace=SFO-sky&destinationPlace=LHR-sky&outboundDate=2019-09-01&adults=1";
-    const response = await fetch(url, {
+export async function getSessionKeyForFlightQuery(date, routeDetails) {
+    const headers = await createRapidApiSessionKey(date, routeDetails);
+    console.log(CONFIG.SESSION_KEY_LOCATION_HEADER);
+    if (headers.has(CONFIG.SESSION_KEY_LOCATION_HEADER)) {
+        return headers.get(CONFIG.SESSION_KEY_LOCATION_HEADER).split(/[/]+/).pop();
+    } else {
+        throw new Error("Session key not found in the response");
+    }
+}
+
+async function createRapidApiSessionKey(date, routeDetails) {
+    const response = await fetch(CONFIG.SESSION_KEY_URL, {
         method: 'POST', 
         headers: {
-            'x-rapidapi-host': 'skyscanner-skyscanner-flight-search-v1.p.rapidapi.com',
-	        'x-rapidapi-key': '9a6fa35695msh80554c9f71bc855p18d1e8jsn491cca04f4aa',
+            [API_CREDENTIALS.API_HOST_HEADER]: API_CREDENTIALS.API_HOST_VALUE,
+	        [API_CREDENTIALS.API_KEY_HEADER]: API_CREDENTIALS.API_KEY_VALUE,
             'content-type': 'application/x-www-form-urlencoded'
         },
-        body: payload
+        body: getSessionKeyPayload(date, routeDetails)
     });
     return await response.headers;
 }
 
-export async function getSessionKeyForFlightQuery() {
-    const createSessionHeaders = await createRapidApiSessionKey();
-    if (createSessionHeaders.has("location")) {
-        const location = createSessionHeaders.get("location");
-        return location.split(/[/]+/).pop();
-    } else {
-        throw new Error("Session key not found in the response");
-    }
+export const getSessionKeyPayload = (date, routeDetails) => {
+    let request = {
+        "inboundDate": "",
+        "cabinClass": "",
+        "children": "",
+        "infants": "",
+        "country": "US",
+        "currency": "USD",
+        "locale": "en-US",
+        "originPlace": routeDetails.from,//"SIN-sky",
+        "destinationPlace": routeDetails.to,//"KUL-sky",
+        "outboundDate": format(date, 'yyyy-MM-dd'),
+        "adults": 1
+    };
 
-    // return createRapidApiSessionKey()
-    //     .then(headers => {
-    //         if (headers.has("location")) {
-    //             let location = headers.get("location");
-    //             return location.split(/[/]+/).pop();
-    //         } else {
-    //             throw new Error("Session key not found in the response");
-    //         }
-    //     })
-    //     .catch(err => console.log(err));
+    const payload = Object.keys(request)
+        .filter(key => !!request[key])
+        .map((key) => key + '=' + encodeURIComponent(request[key]))
+        .join('&');
+
+    return payload;
 }
 
-export async function pollResult(key) {
-    let url = 'https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices/pricing/uk2/v1.0/'+encodeURIComponent(key);
-    url += "?pageIndex=0&pageSize=10&sortType=price";
-    const response = await fetch(url, {
-        method: 'GET', 
-        headers: {
-            'x-rapidapi-host': 'skyscanner-skyscanner-flight-search-v1.p.rapidapi.com',
-	        'x-rapidapi-key': '9a6fa35695msh80554c9f71bc855p18d1e8jsn491cca04f4aa'
-        }
-    });
-    return await response;
-}
-
-// export function* pollResult2(key, pageIndex) {
-
-//     const result = pollResult(key, pageIndex);
-//     result.then(response => {
-//         const foo =  result.json();
-//         yield foo;
-//         const isCompleted = foo.Status === "UpdatesComplete";
-//         yield pollResult2(key, ++pageIndex);
-//     })
-//     .catch(err => {
-//         console.log(err);
-//     });
-//     // let url = 'https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices/pricing/uk2/v1.0/'+encodeURIComponent(key);
-//     // url += "?pageIndex=0&pageSize=10";
-//     // const response = await fetch(url, {
-//     //     method: 'GET', 
-//     //     headers: {
-//     //         'x-rapidapi-host': 'skyscanner-skyscanner-flight-search-v1.p.rapidapi.com',
-// 	//         'x-rapidapi-key': '9a6fa35695msh80554c9f71bc855p18d1e8jsn491cca04f4aa'
-//     //     }
-//     // });
-//     // const json = await response.json();
-//     // console.log(json);
-//     // return json;
-// }
-
-async function* fetchFlights(key) {
-    let hasMore = true;
-
-    while (hasMore) {
-        const response = await pollResult(key);
-        const json = await response.json();
-        hasMore = json.Status !== "UpdatesComplete";
-        yield json;
-    }
-}
-
-export async function fetchAllFlights(key) {
-    const iterator = fetchFlights(key);
+export async function pollSessionResults(sessionKey) {
+    const iterator = pollSession(sessionKey);
     const allFlights = [];
     let total = 0;
     for await (const flights of iterator) {
@@ -110,4 +58,31 @@ export async function fetchAllFlights(key) {
     console.log("Total records... " + total);
     console.log(allFlights);
     return allFlights;
+}
+
+async function pollApi(sessionKey, pageIndex) {
+    let url = CONFIG.POLL_SESSION_URL + encodeURIComponent(sessionKey);
+    url += `?pageIndex=${pageIndex}&pageSize=${PAGE_SIZE}&sortType=price`;
+
+    const response = await fetch(url, {
+        method: 'GET', 
+        headers: {
+            [API_CREDENTIALS.API_HOST_HEADER]: API_CREDENTIALS.API_HOST_VALUE,
+	        [API_CREDENTIALS.API_KEY_HEADER]: API_CREDENTIALS.API_KEY_VALUE
+        }
+    });
+    return await response;
+}
+
+async function* pollSession(sessionKey) {
+    let hasMore = true;
+    let pageIndex = 0;
+    while (hasMore) {
+        const response = await pollApi(sessionKey, pageIndex);
+        const json = await response.json();
+        hasMore = json.Status !== POLL_SESSION_STATUS.UpdatesComplete;
+        yield json;
+
+        pageIndex++;
+    }
 }

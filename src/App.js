@@ -1,12 +1,13 @@
 import React from 'react';
-import DayPicker from "./components/DayPicker";
-import logo from './logo.svg';
 import './App.css';
+import FlyAwayHeader from "./components/FlyAwayBanner";
+import FlyAway from './components/FlyAway';
 
 function App() {
   return (
       <div className="container">
-          <DayPicker/>
+          <FlyAwayHeader/>
+          <FlyAway/>
       </div>
   );
 }
