@@ -1,9 +1,10 @@
 import React from 'react';
+import { string, func, shape } from 'prop-types';
 
 import './flightSearch.css';
 
-const SelectRoute = ({routeDetails, onRouteSelect}) => {
-    const onSelect = (event) => {
+const RouteSelector = ({routeDetails, onRouteSelect}) => {
+    const handleSelect = (event) => {
         const {
             name,
             value
@@ -13,9 +14,9 @@ const SelectRoute = ({routeDetails, onRouteSelect}) => {
         });
 
         //Basic validation
-        if (routeDetails.from === routeDetails.to) {
-            updatedRoute = routeDetails;
-        }
+        // if (routeDetails.from === routeDetails.to) {
+        //     updatedRoute = routeDetails;
+        // }
         onRouteSelect(updatedRoute);
     };
 
@@ -24,30 +25,49 @@ const SelectRoute = ({routeDetails, onRouteSelect}) => {
         <>
             <div className="items">
                 <label>From: </label>
-                <select name="from" value={routeDetails.from} className="select" onChange={onSelect}>
-                    <option>SIN-sky</option>
-                    <option>KUL-sky</option>
-                    <option>SFO-sky</option>
+                <select name="from" value={routeDetails.from} className="select" onChange={handleSelect}>
+                    <option value='SIN-sky'>SIN</option>
+                    <option value='KUL-sky'>KUL</option>
+                    <option value='SFO-sky'>SFO</option>
                 </select>
             </div>
             <div className="items">
                 <label>To: </label>
-                <select name="to" value={routeDetails.to} className="select" onChange={onSelect}>
-                    <option>SIN-sky</option>
-                    <option>KUL-sky</option>
-                    <option>SFO-sky</option>
+                <select name="to" value={routeDetails.to} className="select" onChange={handleSelect}>
+                    <option value='SIN-sky'>SIN</option>
+                    <option value='KUL-sky'>KUL</option>
+                    <option value='SFO-sky'>SFO</option>
                 </select>
             </div>
         </>
     );
 }
-const FlightSearch = (props) => {
+const FlightSearch = ({routeDetails, onRouteSelect}) => {
     return (
         <div className="flightSearch">
-            <SelectRoute {...props}/>
+            <RouteSelector
+                routeDetails={routeDetails}
+                onRouteSelect={onRouteSelect}
+                />
         </div>
     );
     
+};
+
+FlightSearch.propTypes = {
+    onRouteSelect: func.isRequired,
+    routeDetails: shape({
+        from: string,
+        to: string
+    }),
+};
+
+RouteSelector.propTypes = {
+    onRouteSelect: func.isRequired,
+    routeDetails: shape({
+        from: string,
+        to: string
+    }),
 };
 
 export default FlightSearch;

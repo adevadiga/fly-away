@@ -37,9 +37,9 @@
   }
   .lds-ellipsis div {
     position: absolute;
-    top: 27px;
-    width: 2px;
-    height: 2px;
+    top: 15px;
+    width: 3px;
+    height: 3px;
     border-radius: 50%;
     background: rgb(158, 151, 151);
     animation-timing-function: cubic-bezier(0, 1, 1, 0);

@@ -11,7 +11,9 @@ const FlyAway = () => {
     return (
         <div className="flyAway">
             <div className="search">
-                <FlightSearch routeDetails={routeDetails} onRouteSelect={setRouteDetails}/>
+                <FlightSearch
+                    routeDetails={routeDetails}
+                    onRouteSelect={setRouteDetails}/>
             </div>
             <div className="dayPicker">
                 <DayPicker routeDetails={routeDetails}/>

@@ -1,11 +1,11 @@
 import React from 'react';
 import { isSameDay, isBefore, format } from 'date-fns';
-import FlightPrice from "./FlightPrice";
+import DayFlightPrice from "../DayFlightPrice";
 
 export const dateClick = (onDateClick, date) => {
     return () => onDateClick(date);
 }
-export default function DateCell({day, selectedDate, routeDetails, onDateClick}) {
+export default function CalendarDateCell({day, selectedDate, routeDetails, onDateClick}) {
     const today = new Date();
     today.setHours(0,0,0,0); 
     const showFlightPrice = !isBefore(day, today);
@@ -17,7 +17,7 @@ export default function DateCell({day, selectedDate, routeDetails, onDateClick})
             onClick={dateClick(onDateClick, day)}
             >
             <div className="number">{format(day, "d")}</div>
-            {showFlightPrice && <FlightPrice date={day} routeDetails={routeDetails}/>}
+            {showFlightPrice && <DayFlightPrice date={day} routeDetails={routeDetails}/>}
         </div>
     );
 }

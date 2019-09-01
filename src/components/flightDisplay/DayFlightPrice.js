@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react';
-import {getSessionKeyForFlightQuery, pollSessionResults} from "../../service/RapidApi";
 import LoadingPlaceholder from "./LoadingPlaceholder";
+import {getMinPriceForDay} from '../../service/FlightPriceCalculator';
 
-export const getCheapestPriceForDay = (flightDetails) => {
+/*export const getCheapestPriceForDay = (flightDetails) => {
     let minPrice = Number.MAX_SAFE_INTEGER;
     for (const details of flightDetails) {
         minPrice = details.PricingOptions
@@ -15,14 +15,14 @@ async function getCheapestFlightPrice(date, routeDetails) {
     const sessionKey = await getSessionKeyForFlightQuery(date, routeDetails);
     const allFlightDetailsForDay = await pollSessionResults(sessionKey);
     return getCheapestPriceForDay(allFlightDetailsForDay);
-}
+}*/
 
-const FlightPrice = ({date, routeDetails}) => {
+const DayFlightPrice = ({date, routeDetails}) => {
     const [fare, setFare] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        getCheapestFlightPrice(date, routeDetails).then(fare => {
+        getMinPriceForDay(date, routeDetails).then(fare => {
             setFare(fare);
             setIsLoading(false);
         }).catch(err => {
@@ -35,9 +35,9 @@ const FlightPrice = ({date, routeDetails}) => {
     return (
         <>
         {isLoading && <LoadingPlaceholder/>}
-        {!isLoading && <div className="fare">{fare}</div>}
+        {!isLoading && <div className="flightFare">{fare}</div>}
         </>
     );
 };
 
-export default FlightPrice;
+export default DayFlightPrice;

@@ -3,7 +3,6 @@ import {format} from 'date-fns';
 
 export async function getSessionKeyForFlightQuery(date, routeDetails) {
     const headers = await createRapidApiSessionKey(date, routeDetails);
-    console.log(CONFIG.SESSION_KEY_LOCATION_HEADER);
     if (headers.has(CONFIG.SESSION_KEY_LOCATION_HEADER)) {
         return headers.get(CONFIG.SESSION_KEY_LOCATION_HEADER).split(/[/]+/).pop();
     } else {

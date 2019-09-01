@@ -173,7 +173,7 @@ main {
   text-transform: uppercase;
   font-weight: 400;
   /* color: var(--text-color-light); */
-  color: #171919;
+  color: #0f1880;
   font-size: 85%;
   padding: 0.75em 0;
   border-bottom: 1px solid var(--border-color);
@@ -261,4 +261,10 @@ main {
   justify-content: center;
 
   flex-direction: column;
+}
+
+.flightFare {
+    color: #129647;
+    font-size: 90%;
+    font-weight: 500;
 }
