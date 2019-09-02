@@ -19,6 +19,11 @@ flight fares should be for 3 routes (one way). The routes are:
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+1. Clone the repo
+2. Make sure node version is > 10.0.0
+3. yarn install
+4. Access application at http://localhost:3000](http://localhost:3000)
+
 
 ### How to use the `scripts`
 
