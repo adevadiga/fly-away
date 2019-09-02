@@ -22,7 +22,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 1. Clone the repo
 2. Make sure node version is > 10.0.0
 3. yarn install
-4. Access application at http://localhost:3000](http://localhost:3000)
+4. Access application at [http://localhost:3000](http://localhost:3000)
 
 
 ### How to use the `scripts`
@@ -33,4 +33,4 @@ Below you can read a description of scripts you should use while developing in t
 
 - `yarn start`: Runs the app in the development mode. Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 - `yarn test`: Launches the Jest test runner in the interactive watch mode.
-- `run build`: Builds the app for production to the `build` folder.
+- `yarn build`: Builds the app for production to the `build` folder.
