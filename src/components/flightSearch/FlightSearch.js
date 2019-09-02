@@ -1,6 +1,5 @@
 import React from 'react';
 import { string, func, shape } from 'prop-types';
-
 import './flightSearch.css';
 
 const RouteSelector = ({routeDetails, onRouteSelect}) => {
@@ -12,28 +11,23 @@ const RouteSelector = ({routeDetails, onRouteSelect}) => {
         let updatedRoute = Object.assign({}, routeDetails, {
             [name]: value
         });
-
-        //Basic validation
-        // if (routeDetails.from === routeDetails.to) {
-        //     updatedRoute = routeDetails;
-        // }
         onRouteSelect(updatedRoute);
     };
 
     
     return (
         <>
-            <div className="items">
+            <div className='items'>
                 <label>From: </label>
-                <select name="from" value={routeDetails.from} className="select" onChange={handleSelect}>
+                <select name='from' value={routeDetails.from} className='select' onChange={handleSelect}>
                     <option value='SIN-sky'>SIN</option>
                     <option value='KUL-sky'>KUL</option>
                     <option value='SFO-sky'>SFO</option>
                 </select>
             </div>
-            <div className="items">
+            <div className='items'>
                 <label>To: </label>
-                <select name="to" value={routeDetails.to} className="select" onChange={handleSelect}>
+                <select name='to' value={routeDetails.to} className='select' onChange={handleSelect}>
                     <option value='SIN-sky'>SIN</option>
                     <option value='KUL-sky'>KUL</option>
                     <option value='SFO-sky'>SFO</option>
@@ -44,7 +38,7 @@ const RouteSelector = ({routeDetails, onRouteSelect}) => {
 }
 const FlightSearch = ({routeDetails, onRouteSelect}) => {
     return (
-        <div className="flightSearch">
+        <div className='flightSearch'>
             <RouteSelector
                 routeDetails={routeDetails}
                 onRouteSelect={onRouteSelect}

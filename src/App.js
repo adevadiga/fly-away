@@ -1,5 +1,5 @@
 import React from 'react';
-import './App.css';
+import './app.css';
 import FlyAwayHeader from "./components/FlyAwayBanner";
 import FlyAway from './components/FlyAway';
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { isSameDay, isBefore, format } from 'date-fns';
-import DayFlightPrice from "../DayFlightPrice";
+import DayFlightPrice from '../DayFlightPrice';
 
 export const dateClick = (onDateClick, date) => {
     return () => onDateClick(date);
@@ -12,11 +12,11 @@ export default function CalendarDateCell({day, selectedDate, routeDetails, onDat
 
     return (
         <div
-            className={`col cell ${isSameDay(day, selectedDate) ? "selected" : ""}`}
+            className={`col cell ${isSameDay(day, selectedDate) ? 'selected' : ''}`}
             key={day}
             onClick={dateClick(onDateClick, day)}
             >
-            <div className="number">{format(day, "d")}</div>
+            <div className='number'>{format(day, 'd')}</div>
             {showFlightPrice && <DayFlightPrice date={day} routeDetails={routeDetails}/>}
         </div>
     );

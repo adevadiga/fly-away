@@ -33,7 +33,6 @@
     display: inline-block;
     position: relative;
     width: 50px;
-    /* height: 64px; */
   }
   .lds-ellipsis div {
     position: absolute;

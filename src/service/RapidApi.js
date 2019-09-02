@@ -1,4 +1,4 @@
-import {CONFIG, API_CREDENTIALS, POLL_SESSION_STATUS, PAGE_SIZE} from "../config/RapidApiConfig";
+import {CONFIG, API_CREDENTIALS, POLL_SESSION_STATUS, PAGE_SIZE} from '../config/RapidApiConfig';
 import {format} from 'date-fns';
 
 export async function getSessionKeyForFlightQuery(date, routeDetails) {

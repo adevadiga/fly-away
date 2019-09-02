@@ -1,4 +1,4 @@
-import {getSessionKeyForFlightQuery, pollSessionResults} from "./RapidApi";
+import {getSessionKeyForFlightQuery, pollSessionResults} from './RapidApi';
 
 export const calculateMinPrice = (flightDetails) => {
     let minPrice = Number.MAX_SAFE_INTEGER;

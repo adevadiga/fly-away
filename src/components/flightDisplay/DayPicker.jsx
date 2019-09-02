@@ -4,7 +4,7 @@ import { addMonths, subMonths } from 'date-fns';
 import CalendarHeader from './calendar/CalendarHeader';
 import CalendarWeeks from './calendar/CalendarWeeks';
 import CalendarDates from './calendar/CalendarDates';
-import "./dayPicker.css";
+import './dayPicker.css';
 
 class DayPicker extends React.Component {
     state = {
@@ -14,7 +14,7 @@ class DayPicker extends React.Component {
 
     constructor(props) {
         super(props);
-        this.formatForWeek = "MMMM yyyy";
+        this.formatForWeek = 'MMMM yyyy';
     }
     
     onDateClick = day => {
@@ -43,7 +43,7 @@ class DayPicker extends React.Component {
         const {currentMonth, selectedDate} = this.state;
         const {routeDetails} = this.props;
         return (
-            <div className="calendar">
+            <div className='calendar'>
                 <CalendarHeader
                     month={currentMonth}
                     onPrevMonth={this.handlePrevMonthClick}

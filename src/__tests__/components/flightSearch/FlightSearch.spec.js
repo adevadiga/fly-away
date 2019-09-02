@@ -27,7 +27,7 @@ describe('FlightSearch', () => {
         );
         expect(wrapper.find('.items').length).toBe(2);
 
-        wrapper.find('select[name="from"]').simulate('change', {
+        wrapper.find('select[name='from']').simulate('change', {
           target: {
             name: 'from',
             value : 'SFO-sky'
@@ -39,7 +39,7 @@ describe('FlightSearch', () => {
             'to': 'KUL-sky'
         });
 
-        wrapper.find('select[name="to"]').simulate('change', {
+        wrapper.find('select[name='to']').simulate('change', {
             target: {
               name: 'to',
               value : 'SIN-sky'

@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import FlightSearch from './flightSearch/FlightSearch';
 import DayPicker from './flightDisplay/DayPicker';
-import '../App.css';
+import '../app.css';
 
 const FlyAway = () => {
     const [routeDetails, setRouteDetails] = useState({
@@ -9,13 +9,13 @@ const FlyAway = () => {
         'to': 'KUL-sky'
     });
     return (
-        <div className="flyAway">
-            <div className="search">
+        <div className='flyAway'>
+            <div className='search'>
                 <FlightSearch
                     routeDetails={routeDetails}
                     onRouteSelect={setRouteDetails}/>
             </div>
-            <div className="dayPicker">
+            <div className='dayPicker'>
                 <DayPicker routeDetails={routeDetails}/>
             </div>
         </div>
